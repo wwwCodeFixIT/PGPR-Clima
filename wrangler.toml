@@ -1,0 +1,6 @@
+# Cloudflare Pages — opcjonalna konfiguracja
+# Główna konfiguracja deploymentu jest w dashboardzie Cloudflare Pages
+
+[vars]
+# Zmienne środowiskowe (niesekretne) można tutaj umieścić
+# Sekrety (Supabase keys, etc.) dodaj przez dashboard Cloudflare → Settings → Environment Variables

@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background:           215 20% 97%;
+    --foreground:           214 32% 12%;
+    --card:                 0 0% 100%;
+    --card-foreground:      214 32% 12%;
+    --popover:              0 0% 100%;
+    --popover-foreground:   214 32% 12%;
+    --primary:              218 68% 37%;
+    --primary-foreground:   0 0% 100%;
+    --secondary:            214 16% 93%;
+    --secondary-foreground: 214 28% 24%;
+    --muted:                214 16% 94%;
+    --muted-foreground:     214 18% 48%;
+    --accent:               195 97% 42%;
+    --accent-foreground:    0 0% 100%;
+    --destructive:          0 84% 52%;
+    --destructive-foreground: 0 0% 100%;
+    --success:              142 70% 36%;
+    --success-foreground:   0 0% 100%;
+    --warning:              38 92% 46%;
+    --warning-foreground:   0 0% 100%;
+    --border:               214 16% 88%;
+    --input:                214 16% 88%;
+    --ring:                 218 68% 37%;
+    --sidebar-bg:           218 42% 13%;
+    --sidebar-fg:           214 14% 76%;
+    --sidebar-primary:      195 97% 44%;
+    --sidebar-primary-fg:   0 0% 100%;
+    --sidebar-accent:       218 36% 20%;
+    --sidebar-accent-fg:    0 0% 94%;
+    --sidebar-border:       218 30% 19%;
+  }
+
+  .dark {
+    --background:           214 30% 8%;
+    --foreground:           214 14% 90%;
+    --card:                 214 28% 11%;
+    --card-foreground:      214 14% 90%;
+    --popover:              214 28% 11%;
+    --popover-foreground:   214 14% 90%;
+    --primary:              218 74% 55%;
+    --primary-foreground:   0 0% 100%;
+    --secondary:            214 24% 18%;
+    --secondary-foreground: 214 14% 82%;
+    --muted:                214 24% 16%;
+    --muted-foreground:     214 16% 52%;
+    --accent:               195 97% 44%;
+    --accent-foreground:    0 0% 100%;
+    --destructive:          0 72% 54%;
+    --destructive-foreground: 0 0% 100%;
+    --success:              142 62% 40%;
+    --success-foreground:   0 0% 100%;
+    --warning:              38 86% 50%;
+    --warning-foreground:   0 0% 100%;
+    --border:               214 24% 20%;
+    --input:                214 24% 20%;
+    --ring:                 218 74% 55%;
+    --sidebar-bg:           218 42% 8%;
+    --sidebar-fg:           214 14% 70%;
+    --sidebar-primary:      195 97% 46%;
+    --sidebar-primary-fg:   0 0% 100%;
+    --sidebar-accent:       218 36% 15%;
+    --sidebar-accent-fg:    0 0% 92%;
+    --sidebar-border:       218 30% 14%;
+  }
+}
+
+@layer base {
+  * { @apply border-border box-border; }
+  html { @apply scroll-smooth; }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+  ::-webkit-scrollbar        { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track  { background: transparent; }
+  ::-webkit-scrollbar-thumb  { @apply bg-border rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-muted-foreground/40; }
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  .skeleton-shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--muted)) 25%,
+      hsl(var(--muted) / 0.5) 50%,
+      hsl(var(--muted)) 75%
+    );
+    background-size: 200% 100%;
+    @apply animate-skeleton-shimmer;
+  }
+  .tabular-mono {
+    @apply font-mono;
+    font-variant-numeric: tabular-nums;
+  }
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
+  }
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+  .mb-safe  { margin-bottom:  env(safe-area-inset-bottom); }
+}
+
+@layer components {
+  .sync-synced   { @apply text-success; }
+  .sync-pending  { @apply text-warning animate-sync-pulse; }
+  .sync-syncing  { @apply text-primary; }
+  .sync-conflict { @apply text-orange-500; }
+  .sync-error    { @apply text-destructive; }
+  .field-label   { @apply text-sm font-medium text-foreground leading-none; }
+  .sidebar-group-label {
+    @apply px-2 mb-1.5 text-2xs font-semibold uppercase tracking-widest
+           text-sidebar-foreground/40 select-none;
+  }
+}

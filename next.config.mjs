@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',        // Static HTML export → out/
-  trailingSlash: true,     // /app → /app/index.html
+  output: 'export',
+  trailingSlash: true,
   images: {
-    unoptimized: true,     // Required for static export
+    unoptimized: true,
   },
 }
 

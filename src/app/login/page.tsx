@@ -1,10 +1,10 @@
-import type { Metadata } from 'next'
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Wind, CheckCircle } from 'lucide-react'
-
-export const runtime = 'edge'
-
-export const metadata: Metadata = { title: 'Logowanie' }
+import { Wind, CheckCircle, Loader2 } from 'lucide-react'
+import { createSupabaseBrowserClient } from '@/lib/supabase/client'
 
 const BENEFITS = [
   'Zarządzanie zleceniami i protokołami HVAC',
@@ -15,16 +15,37 @@ const BENEFITS = [
 ]
 
 export default function LoginPage() {
+  const router = useRouter()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  async function handleLogin(e: React.FormEvent) {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+
+    const supabase = createSupabaseBrowserClient()
+    const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
+
+    if (authError) {
+      setError('Nieprawidłowy e-mail lub hasło.')
+      setLoading(false)
+    } else {
+      router.push('/app')
+    }
+  }
+
   return (
     <div className="min-h-screen flex">
+      {/* Left — branding */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-pgpr-navy-900 via-pgpr-navy-800 to-pgpr-graphite-900 flex-col justify-between p-12 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5" aria-hidden="true">
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="1"/>
-              </pattern>
-            </defs>
+            <defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="1"/>
+            </pattern></defs>
             <rect width="100%" height="100%" fill="url(#grid)" />
           </svg>
         </div>
@@ -45,34 +66,41 @@ export default function LoginPage() {
             Protokoły, F-Gazy, zlecenia i CRM w jednym miejscu.
           </p>
         </div>
-        <div className="relative z-10">
-          <ul className="space-y-3">
-            {BENEFITS.map((b) => (
-              <li key={b} className="flex items-center gap-3 text-white/70">
-                <CheckCircle className="h-4 w-4 text-pgpr-cyan-400 shrink-0" aria-hidden="true" />
-                <span className="text-sm">{b}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ul className="relative z-10 space-y-3">
+          {BENEFITS.map((b) => (
+            <li key={b} className="flex items-center gap-3 text-white/70">
+              <CheckCircle className="h-4 w-4 text-pgpr-cyan-400 shrink-0" />
+              <span className="text-sm">{b}</span>
+            </li>
+          ))}
+        </ul>
       </div>
 
+      {/* Right — form */}
       <div className="flex-1 flex items-center justify-center p-6 bg-background">
         <div className="w-full max-w-sm space-y-8">
-          <div className="lg:hidden flex items-center gap-3 mb-2">
+          <div className="lg:hidden flex items-center gap-3">
             <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-pgpr-blue-600 to-pgpr-cyan-500 flex items-center justify-center">
               <Wind className="h-4 w-4 text-white" />
             </div>
             <span className="text-base font-bold text-foreground">PGPR Clima</span>
           </div>
+
           <div>
             <h2 className="text-2xl font-bold text-foreground">Zaloguj się</h2>
             <p className="mt-1 text-sm text-muted-foreground">Podaj dane swojego konta</p>
           </div>
-          <form action="/api/auth/login" method="POST" className="space-y-4">
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            {error && (
+              <div className="rounded-md bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive" role="alert">
+                {error}
+              </div>
+            )}
             <div className="space-y-1.5">
               <label htmlFor="email" className="field-label">Adres e-mail</label>
-              <input id="email" name="email" type="email" autoComplete="email" required placeholder="jan@firma.pl"
+              <input id="email" type="email" autoComplete="email" required placeholder="jan@firma.pl"
+                value={email} onChange={e => setEmail(e.target.value)}
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
             </div>
             <div className="space-y-1.5">
@@ -80,13 +108,17 @@ export default function LoginPage() {
                 <label htmlFor="password" className="field-label">Hasło</label>
                 <Link href="/forgot-password" className="text-xs text-primary hover:underline">Zapomniałem hasła</Link>
               </div>
-              <input id="password" name="password" type="password" autoComplete="current-password" required placeholder="••••••••"
+              <input id="password" type="password" autoComplete="current-password" required placeholder="••••••••"
+                value={password} onChange={e => setPassword(e.target.value)}
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
             </div>
-            <button type="submit" className="w-full h-10 px-4 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-              Zaloguj się
+            <button type="submit" disabled={loading}
+              className="w-full h-10 px-4 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60 flex items-center justify-center gap-2">
+              {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+              {loading ? 'Logowanie…' : 'Zaloguj się'}
             </button>
           </form>
+
           <p className="text-center text-sm text-muted-foreground">
             Nie masz konta?{' '}
             <Link href="/register" className="text-primary hover:underline font-medium">Zarejestruj firmę</Link>

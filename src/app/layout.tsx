@@ -4,35 +4,20 @@ import { ThemeProvider } from 'next-themes'
 import { Toaster } from 'sonner'
 import '@/styles/globals.css'
 
-export const runtime = 'edge'
-
-const inter = Inter({
-  subsets: ['latin', 'latin-ext'],
-  variable: '--font-sans',
-  display: 'swap',
-})
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  display: 'swap',
-  weight: ['400', '500'],
-})
+const inter = Inter({ subsets: ['latin', 'latin-ext'], variable: '--font-sans', display: 'swap' })
+const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap', weight: ['400', '500'] })
 
 export const metadata: Metadata = {
   title: { template: '%s | PGPR Clima', default: 'PGPR Clima – Field Service HVAC' },
-  description: 'Profesjonalny system zarządzania serwisem HVAC, klimatyzacją i pompami ciepła.',
-  applicationName: 'PGPR Clima',
-  keywords: ['HVAC', 'klimatyzacja', 'serwis', 'F-Gazy', 'protokoły', 'zlecenia'],
+  description: 'Profesjonalny system zarządzania serwisem HVAC.',
   robots: { index: false, follow: false },
-  icons: { icon: '/favicon.ico', apple: '/apple-touch-icon.png' },
   manifest: '/manifest.json',
 }
 
 export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#f5f6f8' },
-    { media: '(prefers-color-scheme: dark)', color: '#0a1019' },
+    { media: '(prefers-color-scheme: dark)',  color: '#0a1019' },
   ],
   width: 'device-width',
   initialScale: 1,

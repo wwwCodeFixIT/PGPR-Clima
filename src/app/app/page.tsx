@@ -1,31 +1,24 @@
-import type { Metadata } from 'next'
-import {
-  ClipboardList, Users, Monitor, Wind, Archive, AlertTriangle, CalendarCheck, TrendingUp,
-} from 'lucide-react'
+'use client'
+
+import { ClipboardList, Users, Monitor, Wind, Archive, AlertTriangle, CalendarCheck, TrendingUp } from 'lucide-react'
 import { KpiCard } from '@/components/ui/card'
 import { SkeletonCard } from '@/components/ui/skeleton'
 
-export const runtime = 'edge'
-export const metadata: Metadata = { title: 'Pulpit' }
-
 interface KpiItem {
-  label: string
-  value: string
+  label: string; value: string
   accent?: 'primary' | 'success' | 'warning' | 'destructive' | 'accent'
-  icon: React.ReactNode
-  trend?: 'up' | 'down' | 'neutral'
-  trendValue?: string
+  icon: React.ReactNode; trend?: 'up' | 'down' | 'neutral'; trendValue?: string
 }
 
 const KPI: KpiItem[] = [
-  { label: 'Zlecenia dzisiaj',      value: '8',       accent: 'primary',     icon: <ClipboardList className="h-5 w-5" />, trend: 'up', trendValue: '+2 vs wczoraj' },
-  { label: 'Zlecenia w toku',       value: '14',      accent: 'accent',      icon: <TrendingUp    className="h-5 w-5" /> },
-  { label: 'Przeglądy (30 dni)',    value: '23',      accent: 'warning',     icon: <CalendarCheck className="h-5 w-5" /> },
-  { label: 'Aktywni klienci',       value: '142',     accent: 'success',     icon: <Users         className="h-5 w-5" /> },
-  { label: 'Urządzenia',            value: '387',     icon: <Monitor       className="h-5 w-5" /> },
-  { label: 'Czynnik wydany',        value: '48,2 kg', icon: <Wind          className="h-5 w-5" /> },
-  { label: 'Butle — niski stan',    value: '3',       accent: 'destructive', icon: <Archive       className="h-5 w-5" /> },
-  { label: 'Niepodpisane protokoły',value: '5',       accent: 'warning',     icon: <AlertTriangle className="h-5 w-5" /> },
+  { label: 'Zlecenia dzisiaj',       value: '8',       accent: 'primary',     icon: <ClipboardList className="h-5 w-5" />, trend: 'up', trendValue: '+2 vs wczoraj' },
+  { label: 'Zlecenia w toku',        value: '14',      accent: 'accent',      icon: <TrendingUp className="h-5 w-5" /> },
+  { label: 'Przeglądy (30 dni)',     value: '23',      accent: 'warning',     icon: <CalendarCheck className="h-5 w-5" /> },
+  { label: 'Aktywni klienci',        value: '142',     accent: 'success',     icon: <Users className="h-5 w-5" /> },
+  { label: 'Urządzenia',             value: '387',     icon: <Monitor className="h-5 w-5" /> },
+  { label: 'Czynnik wydany',         value: '48,2 kg', icon: <Wind className="h-5 w-5" /> },
+  { label: 'Butle — niski stan',     value: '3',       accent: 'destructive', icon: <Archive className="h-5 w-5" /> },
+  { label: 'Niepodpisane protokoły', value: '5',       accent: 'warning',     icon: <AlertTriangle className="h-5 w-5" /> },
 ]
 
 export default function DashboardPage() {
@@ -36,7 +29,7 @@ export default function DashboardPage() {
         <p className="text-sm text-muted-foreground mt-1">PGPR Clima — HVAC Business Operating System</p>
       </div>
       <section aria-label="Wskaźniki KPI">
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {KPI.map((kpi) => (
             <KpiCard key={kpi.label} label={kpi.label} value={kpi.value} accent={kpi.accent} icon={kpi.icon} trend={kpi.trend} trendValue={kpi.trendValue} />
           ))}
@@ -57,15 +50,10 @@ export default function DashboardPage() {
         <section className="rounded-lg border border-border bg-card p-5">
           <h2 className="text-sm font-semibold text-foreground mb-4">Wymagają uwagi</h2>
           <div className="space-y-3">
-            {[
-              { label: 'Butla R32 – niski stan (1,2 kg)', color: 'bg-destructive' },
-              { label: '3 protokoły bez podpisu klienta',  color: 'bg-warning' },
-              { label: 'Przegląd zaległy: ul. Piękna 7',   color: 'bg-destructive' },
-              { label: 'Faktura #FV/2024/0087 zaległa',    color: 'bg-destructive' },
-            ].map(({ label, color }) => (
-              <div key={label} className="flex items-start gap-3">
-                <div className={`h-2 w-2 rounded-full ${color} mt-1.5 shrink-0`} />
-                <p className="text-sm text-foreground">{label}</p>
+            {[{l:'Butla R32 – niski stan',c:'bg-destructive'},{l:'3 protokoły bez podpisu',c:'bg-warning'},{l:'Przegląd zaległy: ul. Piękna 7',c:'bg-destructive'},{l:'Faktura #FV/2024/0087 zaległa',c:'bg-destructive'}].map(({l,c}) => (
+              <div key={l} className="flex items-start gap-3">
+                <div className={`h-2 w-2 rounded-full ${c} mt-1.5 shrink-0`} />
+                <p className="text-sm text-foreground">{l}</p>
               </div>
             ))}
           </div>

@@ -1,6 +1,3 @@
-import type { Metadata } from 'next'
-export const runtime = 'edge'
-export const metadata: Metadata = { title: 'Automations' }
 export default function Page() {
   return (
     <div className="p-6">

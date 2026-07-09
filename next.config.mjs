@@ -1,10 +1,3 @@
-import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev'
-
-// Setup local dev platform (only runs in dev mode)
-if (process.env.NODE_ENV === 'development') {
-  await setupDevPlatform()
-}
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -15,7 +8,7 @@ const nextConfig = {
         pathname: '/storage/v1/object/public/**',
       },
     ],
-    // Cloudflare Pages nie ma Image Optimization — używaj unoptimized
+    // CF Pages nie ma Image Optimization
     unoptimized: true,
   },
 

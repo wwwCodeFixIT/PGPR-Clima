@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Packages that use Node.js APIs - exclude from edge bundling
+  serverExternalPackages: ['drizzle-orm', 'postgres', '@trigger.dev/sdk'],
+
   images: {
     remotePatterns: [
       {
@@ -10,6 +13,7 @@ const nextConfig = {
     ],
     formats: ['image/avif', 'image/webp'],
   },
+
   async headers() {
     return [
       {
@@ -27,6 +31,7 @@ const nextConfig = {
       },
     ]
   },
+
   async redirects() {
     return [
       { source: '/', destination: '/app', permanent: false },

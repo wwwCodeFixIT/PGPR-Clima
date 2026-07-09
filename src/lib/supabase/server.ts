@@ -1,21 +1,24 @@
-import { createServerClient } from '@supabase/ssr'
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
 export function createSupabaseServerClient() {
   const cookieStore = cookies()
+
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll: () => cookieStore.getAll(),
-        setAll: (cookiesToSet) => {
+        getAll() {
+          return cookieStore.getAll()
+        },
+        setAll(cookiesToSet: { name: string; value: string; options?: CookieOptions }[]) {
           try {
             cookiesToSet.forEach(({ name, value, options }) => {
               cookieStore.set(name, value, options)
             })
           } catch {
-            // Server Component — read-only cookies
+            // Server Component — read-only cookies store, safe to ignore
           }
         },
       },
@@ -23,6 +26,7 @@ export function createSupabaseServerClient() {
   )
 }
 
+// Service role — server-only, NEVER expose to browser
 export function createSupabaseServiceClient() {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { createClient } = require('@supabase/supabase-js')

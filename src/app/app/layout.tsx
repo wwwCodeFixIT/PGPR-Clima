@@ -4,9 +4,7 @@ import { createSupabaseServerClient } from '@/lib/supabase/server'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = createSupabaseServerClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
     redirect('/login')
@@ -18,17 +16,13 @@ export default async function DashboardLayout({ children }: { children: React.Re
     .eq('id', user.id)
     .single()
 
-  // Explicitly typed to satisfy exactOptionalPropertyTypes
-  const shellUser:
-    | { name: string; email: string; role: string }
-    | undefined =
-    profile != null
-      ? {
-          name:  profile.full_name ?? user.email ?? 'Użytkownik',
-          email: user.email ?? '',
-          role:  profile.role ?? 'technician',
-        }
-      : undefined
+  const shellUser = profile != null
+    ? {
+        name:  profile.full_name ?? user.email ?? 'Użytkownik',
+        email: user.email ?? '',
+        role:  (profile.role as string) ?? 'technician',
+      }
+    : undefined
 
   return (
     <AppShell user={shellUser} notificationCount={0}>

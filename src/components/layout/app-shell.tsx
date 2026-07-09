@@ -52,11 +52,10 @@ function MobileSidebarOverlay({
   )
 }
 
-// Fix: user?: T | undefined — required by exactOptionalPropertyTypes: true
 export interface AppShellProps {
   children:           React.ReactNode
-  user?:              { name: string; email: string; role: string } | undefined
-  notificationCount?: number | undefined
+  user?:              { name: string; email: string; role: string }
+  notificationCount?: number
 }
 
 export function AppShell({ children, user, notificationCount = 0 }: AppShellProps) {

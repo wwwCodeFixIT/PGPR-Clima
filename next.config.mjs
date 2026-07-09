@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Packages that use Node.js APIs - exclude from edge bundling
-  serverExternalPackages: ['drizzle-orm', 'postgres', '@trigger.dev/sdk'],
-
   images: {
     remotePatterns: [
       {

@@ -34,18 +34,13 @@ function Breadcrumbs() {
     <nav aria-label="Nawigacja okruszkowa" className="hidden md:flex items-center gap-1 text-sm">
       {crumbs.map((crumb, i) => (
         <React.Fragment key={crumb.href}>
-          {i > 0 && (
-            <ChevronRight className="h-3.5 w-3.5 text-muted-foreground shrink-0" aria-hidden="true" />
-          )}
+          {i > 0 && <ChevronRight className="h-3.5 w-3.5 text-muted-foreground shrink-0" aria-hidden="true" />}
           {crumb.isLast ? (
             <span className="font-medium text-foreground truncate max-w-[180px]" aria-current="page">
               {crumb.isId ? 'Szczegóły' : crumb.label}
             </span>
           ) : (
-            <a
-              href={crumb.href}
-              className="text-muted-foreground hover:text-foreground transition-colors duration-fast truncate max-w-[120px]"
-            >
+            <a href={crumb.href} className="text-muted-foreground hover:text-foreground transition-colors duration-fast truncate max-w-[120px]">
               {crumb.label}
             </a>
           )}
@@ -89,9 +84,7 @@ function ThemeToggle() {
 
 function NotificationBell({ count = 0 }: { count?: number }) {
   return (
-    <Button variant="ghost" size="icon"
-      aria-label={count > 0 ? `${count} powiadomień` : 'Powiadomienia'}
-      className="relative">
+    <Button variant="ghost" size="icon" aria-label={count > 0 ? `${count} powiadomień` : 'Powiadomienia'} className="relative">
       <Bell className="h-4 w-4" />
       {count > 0 && (
         <span className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground flex items-center justify-center" aria-hidden="true">
@@ -107,9 +100,7 @@ function UserMenu({ name, email, role }: { name: string; email: string; role: st
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
-        <button
-          className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-secondary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          aria-label={`Menu użytkownika: ${name}`}>
+        <button className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-secondary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label={`Menu użytkownika: ${name}`}>
           <Avatar.Root className="h-7 w-7 rounded-full">
             <Avatar.Fallback className="h-7 w-7 rounded-full bg-primary text-primary-foreground text-xs font-semibold flex items-center justify-center">
               {initials(name)}
@@ -148,29 +139,22 @@ function UserMenu({ name, email, role }: { name: string; email: string; role: st
   )
 }
 
-// Fix: user?: T | undefined for exactOptionalPropertyTypes
 export interface TopbarProps {
-  onMenuClick?:       (() => void) | undefined
-  notificationCount?: number | undefined
-  user?:              { name: string; email: string; role: string } | undefined
-  onSearchClick?:     (() => void) | undefined
+  onMenuClick?:       () => void
+  notificationCount?: number
+  user?:              { name: string; email: string; role: string }
+  onSearchClick?:     () => void
 }
 
 export function Topbar({ onMenuClick, notificationCount = 0, user, onSearchClick }: TopbarProps) {
   return (
     <header className="flex items-center h-topbar px-4 gap-3 border-b border-border bg-card/80 backdrop-blur-sm shrink-0 sticky top-0 z-sticky">
-      <Button variant="ghost" size="icon" className="lg:hidden shrink-0"
-        onClick={onMenuClick} aria-label="Otwórz menu">
+      <Button variant="ghost" size="icon" className="lg:hidden shrink-0" onClick={onMenuClick} aria-label="Otwórz menu">
         <Menu className="h-5 w-5" />
       </Button>
-
-      <div className="flex-1 min-w-0">
-        <Breadcrumbs />
-      </div>
-
+      <div className="flex-1 min-w-0"><Breadcrumbs /></div>
       <div className="flex items-center gap-1 shrink-0">
-        <Button variant="ghost" size="icon" onClick={onSearchClick}
-          aria-label="Szukaj (Ctrl+K)" title="Szukaj (Ctrl+K)">
+        <Button variant="ghost" size="icon" onClick={onSearchClick} aria-label="Szukaj (Ctrl+K)" title="Szukaj (Ctrl+K)">
           <Search className="h-4 w-4" />
         </Button>
         <ThemeToggle />

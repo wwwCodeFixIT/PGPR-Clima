@@ -1,13 +1,12 @@
+import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev'
+
+// Setup local dev platform (only runs in dev mode)
+if (process.env.NODE_ENV === 'development') {
+  await setupDevPlatform()
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Wyłącz webpack cache server-side — plik 0.pack przekracza limit 25MB CF Pages
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      config.cache = false
-    }
-    return config
-  },
-
   images: {
     remotePatterns: [
       {
@@ -16,19 +15,8 @@ const nextConfig = {
         pathname: '/storage/v1/object/public/**',
       },
     ],
-    formats: ['image/avif', 'image/webp'],
-  },
-
-  async headers() {
-    return [
-      {
-        source: '/sw.js',
-        headers: [
-          { key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' },
-          { key: 'Service-Worker-Allowed', value: '/' },
-        ],
-      },
-    ]
+    // Cloudflare Pages nie ma Image Optimization — używaj unoptimized
+    unoptimized: true,
   },
 
   async redirects() {

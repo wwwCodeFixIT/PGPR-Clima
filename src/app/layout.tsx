@@ -4,8 +4,20 @@ import { ThemeProvider } from 'next-themes'
 import { Toaster } from 'sonner'
 import '@/styles/globals.css'
 
-const inter = Inter({ subsets: ['latin', 'latin-ext'], variable: '--font-sans', display: 'swap' })
-const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap', weight: ['400', '500'] })
+export const runtime = 'edge'
+
+const inter = Inter({
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-sans',
+  display: 'swap',
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
+  weight: ['400', '500'],
+})
 
 export const metadata: Metadata = {
   title: { template: '%s | PGPR Clima', default: 'PGPR Clima – Field Service HVAC' },
@@ -20,7 +32,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#f5f6f8' },
-    { media: '(prefers-color-scheme: dark)',  color: '#0a1019' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a1019' },
   ],
   width: 'device-width',
   initialScale: 1,

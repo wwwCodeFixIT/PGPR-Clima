@@ -2,6 +2,8 @@ import { redirect } from 'next/navigation'
 import { AppShell } from '@/components/layout/app-shell'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 
+export const runtime = 'edge'
+
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = createSupabaseServerClient()
   const { data: { user } } = await supabase.auth.getUser()

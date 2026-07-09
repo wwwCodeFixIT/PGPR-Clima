@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Wyłącz webpack cache server-side — plik 0.pack przekracza limit 25MB CF Pages
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.cache = false
+    }
+    return config
+  },
+
   images: {
     remotePatterns: [
       {
@@ -18,12 +26,6 @@ const nextConfig = {
         headers: [
           { key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' },
           { key: 'Service-Worker-Allowed', value: '/' },
-        ],
-      },
-      {
-        source: '/manifest.json',
-        headers: [
-          { key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' },
         ],
       },
     ]

@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import { CheckCircle, Calendar, Shield } from 'lucide-react'
@@ -19,7 +20,6 @@ function QuotationContent() {
     )
   }
 
-  // In production: fetch quotation data by token from Supabase
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-6 py-4">
@@ -48,7 +48,6 @@ function QuotationContent() {
                 <div className="mt-4 space-y-2 text-sm text-gray-600 dark:text-gray-400">
                   <p>📦 {device}</p>
                   <p>🛡️ Gwarancja {warranty}</p>
-                  <p>🔧 Montaż w cenie</p>
                 </div>
                 <button className="mt-5 w-full py-3 rounded-xl bg-pgpr-blue-700 text-white text-sm font-semibold hover:bg-pgpr-blue-600 transition-colors">
                   Wybieram ten wariant
@@ -74,9 +73,20 @@ function QuotationContent() {
   )
 }
 
-export default function QuotationPage() {
+function LoadingSpinner() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-2 border-primary border-t-transparent animate-spin" /></div>}>
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="h-8 w-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+    </div>
+  )
+}
+
+export default function QuotationPage() {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  if (!mounted) return <LoadingSpinner />
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
       <QuotationContent />
     </Suspense>
   )
